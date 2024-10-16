@@ -72,7 +72,6 @@ class AdminConferenceManagementController extends Controller
      */
     public function update(StoreAdminConferenceManagementRequest $request, AdminConferenceManagement $conference)
     {
-        dd($request->all());
         // Validate the incoming request
         $validatedData = $request->validated();
 

@@ -12,7 +12,6 @@
 @endif
 <div class="container mt-5">
     <h2 class="text-center mb-4" style="color: #4a90e2;">Edit Conference</h2>
-
     <form class="p-4 shadow-lg" style="background-color: #fff; border-radius: 8px;" action="{{ route('conference.update', $conference->id) }}" method="POST">
         @csrf
         @method('PUT')

@@ -27,7 +27,7 @@ class StoreAdminConferenceManagementRequest extends FormRequest
         'description' => 'nullable|string',
         'lecturers' => 'required|string', // Comma-separated lecturers
         'date' => 'required|date',
-        'time' => 'required|date_format:H:i',
+        'time' => 'required',
         'address' => 'required|string|max:255',
     ];
     }
