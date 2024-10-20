@@ -18,10 +18,6 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4" style="color: #4a90e2;">Conference List</h2>
 
-    <!-- Create Conference Button -->
-    <div class="text-end mb-3">
-        <a href="{{ route('conference.create') }}" class="btn btn-success">Create Conference</a>
-    </div>
 
     <table class="table table-striped">
         <thead>
@@ -45,13 +41,7 @@
                     <td>{{ $conference->lecturers }}</td>
                     <td>{{ $conference->address }}</td>
                     <td>
-                        <a href="{{ route('conference.show', $conference->id) }}" class="btn btn-primary btn-sm">View</a>
-                        <a href="{{ route('conference.edit', $conference->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="{{ route('conference.destroy', $conference->id) }}" method="post" style="display: inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                        <a href="{{ route('employee.conference.view', $conference->id) }}" class="btn btn-primary btn-sm">View</a>
                     </td>
                 </tr>
             @endforeach

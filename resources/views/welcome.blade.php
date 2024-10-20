@@ -23,7 +23,7 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Logout</a>
@@ -36,15 +36,15 @@
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Main Page</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Client</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Worker</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('user.profile') }}">Main Page</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('client.index') }}">Client</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('employee.index') }}">Worker</a>
                     <div class="dropdown mt-3">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                           Admin Panel
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">User Management</a></li>
+                          <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">User Management</a></li>
                           <li><a class="dropdown-item" href="{{ route('conference.index') }}">Conference Management</a></li>
                         </ul>
                       </div>

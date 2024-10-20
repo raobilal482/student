@@ -54,9 +54,9 @@ class AdminConferenceManagementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AdminConferenceManagement $adminConferenceManagement)
+    public function show(AdminConferenceManagement $conference)
     {
-        return 'asdf';
+        return view('admin.conference.view',compact('conference'));
     }
 
     /**
