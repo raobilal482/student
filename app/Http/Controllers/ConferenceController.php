@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAdminConferenceManagementRequest;
-use App\Http\Requests\UpdateAdminConferenceManagementRequest;
-use App\Models\AdminConferenceManagement;
+use App\Models\Conference;
+use Illuminate\Http\Request;
 
-class AdminConferenceManagementController extends Controller
+//This controller is for confenrece management from admin side
+class ConferenceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $conferences = AdminConferenceManagement::all();
-        return view('admin.conference.list',[
-            'conferences' => $conferences
+        //This function show all the listting of conferences
+        $conferences = Conference::all();
+
+        return view('admin.conference.list', [
+            'conferences' => $conferences,
         ]);
     }
 
@@ -30,12 +29,19 @@ class AdminConferenceManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdminConferenceManagementRequest $request)
+    public function store(Request $request)
     {
 
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'lecturers' => 'required|string',
+            'date' => 'required|date',
+            'time' => 'required',
+            'address' => 'required|string|max:255',
+        ]);
 
-        $conference = AdminConferenceManagement::create([
+        $conference = Conference::create([
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
             'lecturers' => json_encode(explode(',', $validatedData['lecturers'])),
@@ -54,15 +60,17 @@ class AdminConferenceManagementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AdminConferenceManagement $conference)
+    public function show(Conference $conference)
     {
-        return view('admin.conference.view',compact('conference'));
+        $users = $conference->users;
+
+        return view('admin.conference.view', compact('conference', 'users'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminConferenceManagement $conference)
+    public function edit(Conference $conference)
     {
         return view('admin.conference.edit', compact('conference'));
     }
@@ -70,10 +78,17 @@ class AdminConferenceManagementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreAdminConferenceManagementRequest $request, AdminConferenceManagement $conference)
+    public function update(Request $request, Conference $conference)
     {
         // Validate the incoming request
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'lecturers' => 'required|string',
+            'date' => 'required|date',
+            'time' => 'required',
+            'address' => 'required|string|max:255',
+        ]);
 
         // Update the conference using the validated data
         $conference->update([
@@ -92,11 +107,10 @@ class AdminConferenceManagementController extends Controller
         return redirect()->route('conference.index');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminConferenceManagement $id)
+    public function destroy(Conference $id)
     {
         // Attempt to delete the conference
         try {
@@ -106,12 +120,10 @@ class AdminConferenceManagementController extends Controller
             session()->flash('success', 'Conference deleted successfully!');
         } catch (\Exception $e) {
             // Handle any errors during deletion (optional)
-            session()->flash('error', 'An error occurred while deleting the conference: ' . $e->getMessage());
+            session()->flash('error', 'An error occurred while deleting the conference: '.$e->getMessage());
         }
 
         // Redirect back to the index or another page
         return redirect()->route('conference.index');
     }
-
-
 }

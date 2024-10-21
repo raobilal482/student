@@ -2,32 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClientRequest;
-use App\Http\Requests\UpdateClientRequest;
-use App\Models\AdminConferenceManagement;
-use App\Models\Client;
+use App\Models\Conference;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function create()
     {
-        $conferences = AdminConferenceManagement::all();
-        return view('client.list',[
-            'conferences' => $conferences
+        // This is entery form in to client system
+        return view('client.create');
+    }
+
+    public function index(Request $request)
+    {
+        // This function is for showing all the listing of confereces when user can registered and view conference
+        $conferences = Conference::all();
+        $user = User::find($request->get('user')); // Get the user by ID from the query parameters
+
+        return view('client.list', [
+            'conferences' => $conferences,
+            'user' => $user, // Pass the user to the view
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function conferenceRegister(Request $request)
     {
-        return view('client.create');
+        // This function is for user register for conference
+        $userid = $request->user_id;
+        $conferenceid = $request->conference_id;
+        $user = User::find($userid);
+
+        if ($user) {
+            // Check if the user is already registered for the conference
+            if ($user->conferences()->where('conference_id', $conferenceid)->exists()) {
+                return redirect()->back()->with('error', 'You have already registered for this conference.');
+            }
+
+            // Register the conference if not already registered
+            $user->conferences()->attach($conferenceid);
+
+            // If the user registered successfully display the success message
+            return redirect()->back()->with('success', 'You are registered successfully.');
+        }
+
+        // If the user is not registered then display the error message
+        return redirect()->back()->with('error', 'User not found.');
     }
 
     /**
@@ -35,28 +55,26 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'sur_name' => 'required|string|max:255',
-        ]);
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'sur_name' => $validatedData['sur_name'],
-        ]);
-
-        // Flash message to show success (optional)
-        session()->flash('success', 'User created successfully!');
-
-        // Redirect to a specific page (e.g., index or show)
-        return redirect()->route('client.index');
+        // This is kind of for login in system
+        $user = User::where('name', $request->name)
+            ->where('sur_name', $request->sur_name)
+            ->first();
+        if ($user) {
+            return redirect()->route('client.index', ['user' => $user])->with('success', 'Welcome '.$user->name.'!...');
+        } else {
+            return redirect()->back()->with('error', 'You are not registered yet! Please request admin for enter your details');
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Conference $conference)
     {
-        return view('client.view',['user'=>$user]);
+        //This function is for showing the details
+        return view('client.view', [
+            'conference' => $conference,
+        ]);
     }
 
     /**
@@ -82,7 +100,7 @@ class ClientController extends Controller
         $user->update([
             'name' => $validatedData['name'],
             'sur_name' => $validatedData['sur_name'],
-           
+
         ]);
 
         // Flash message to show success
@@ -91,7 +109,6 @@ class ClientController extends Controller
         // Redirect to the conference index or another page
         return redirect()->route('client.index');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -106,7 +123,7 @@ class ClientController extends Controller
             session()->flash('success', 'User deleted successfully!');
         } catch (\Exception $e) {
             // Handle any errors during deletion (optional)
-            session()->flash('error', 'An error occurred while deleting the User: ' . $e->getMessage());
+            session()->flash('error', 'An error occurred while deleting the User: '.$e->getMessage());
         }
 
         // Redirect back to the index or another page

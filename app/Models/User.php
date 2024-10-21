@@ -20,7 +20,15 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'sur_name',
+        'group',
+        'email',
+        'type',
     ];
+
+    public function conferences()
+    {
+        return $this->belongsToMany(Conference::class, 'conferences_users');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
