@@ -1,17 +1,3 @@
-
-
-window.addEventListener('DOMContentLoaded', event => {
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        });
-    }
-
-});
-
 /*!
 * Start Bootstrap - Grayscale v7.0.6 (https://startbootstrap.com/theme/grayscale)
 * Copyright 2013-2023 Start Bootstrap
@@ -19,7 +5,7 @@ window.addEventListener('DOMContentLoaded', event => {
 */
 //
 // Scripts
-//
+// 
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -37,7 +23,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     };
 
-    // Shrink the navbar
+    // Shrink the navbar 
     navbarShrink();
 
     // Shrink the navbar when page is scrolled
