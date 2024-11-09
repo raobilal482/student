@@ -24,7 +24,7 @@ class ClientController extends Controller
         $conferences = Conference::all();
         return view('client.list', [
             'conferences' => $conferences,
-            'user' => FacadesAuth::user(),b
+            'user' => FacadesAuth::user(),
 
         ]);
     }
