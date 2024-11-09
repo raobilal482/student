@@ -24,11 +24,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
+                        {{--  <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>  --}}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Logout</a>
-                    </li>
+                   
+                        @if (auth()->check())
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm">Logout</button>
+                        </form>
+                    @endif
+                </li>
                 </ul>
             </div>
         </div>

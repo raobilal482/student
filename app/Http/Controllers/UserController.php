@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function main(){
+        return view('admin.main');
+    }
     public function index()
     {
-        $users = User::where('type', 'user')->get();
+        $users = User::all();
         return view('admin.user.list', [
             'users' => $users,
         ]);
@@ -29,23 +33,28 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        $validatedData = $request->validate([
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users,email',
             'name' => 'required|string|max:255',
             'sur_name' => 'required|string|max:255',
-            'email' => 'required|unique:users,email',
+            'password' => 'required|string|min:8|confirmed', // Ensure you also use the confirmed rule
         ]);
-
-        try {
-            // Create the user
+    
+        try{
             $user = User::create([
-                'name' => $validatedData['name'],
-                'sur_name' => $validatedData['sur_name'],
-                'email' => $validatedData['email'],
+                'email' => $validated['email'],
+                'name' => $validated['name'],
+                'sur_name' => $validated['sur_name'],
                 'type' => 'user',
+                'password' => Hash::make($validated['password']), // Hash the password
             ]);
 
-            // Flash message to show success
             session()->flash('success', 'User created successfully!');
+
+        // Create the new user
+      
+
+            // Flash message to show success
 
         } catch (\Exception $e) {
             // Log the error for debugging

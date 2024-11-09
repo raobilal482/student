@@ -1,4 +1,5 @@
-@extends('app') <!-- Make sure this points to your main layout file -->
+@extends('app')
+
 @section('content')
     <section class="px-4 py-5 w-100" style="background-color: #9de2ff; border-radius: .5rem .5rem 0 0;">
         <div class="row d-flex justify-content-center">
@@ -15,25 +16,31 @@
                                 <h5 class="mb-1">Name: {{ $student->name }}</h5>
                                 <p class="pb-1 mb-2">Sur Name: {{ $student->sur_name }}</p>
                                 <p class="pb-1 mb-2">Group: {{ $student->group }}</p>
-                                <div class="pt-1 d-flex">
-                                    <a href="{{ route('client.create') }}" type="button" data-mdb-button-init
-                                        data-mdb-ripple-init class="btn btn-outline-primary me-1 flex-grow-1">Client
-                                        System</a>
-                                    <a href="{{ route('employee.index') }}" type="button" data-mdb-button-init
-                                        data-mdb-ripple-init class="btn btn-primary flex-grow-1">Employee System</a>
-                                </div>
-                                <div class="mt-3 d-flex dropdown">
-                                    <button class="btn dropdown-toggle btn-outline-primary me-1 flex-grow-1" type="button"
-                                        data-bs-toggle="dropdown">
-                                        Admin Panel
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{ route('admin.user.index') }}">User
-                                                Management</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('conference.index') }}">Conference
-                                                Management</a></li>
-                                    </ul>
-                                </div>
+
+                                <!-- Check if the user is logged in -->
+                                @auth
+                                    @if (auth()->user()->type == 'client')
+                                        <div class="pt-1 d-flex">
+                                            <a href="{{ route('client.index') }}" type="button" class="btn btn-outline-primary me-1 flex-grow-1">Client System</a>
+                                        </div>
+                                    @elseif (auth()->user()->type == 'employee')
+                                        <div class="pt-1 d-flex">
+                                            <a href="{{ route('employee.index') }}" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary flex-grow-1">Employee System</a>
+                                        </div>
+                                    @elseif (auth()->user()->type == 'admin')
+                                        <div class="mt-3 d-flex">
+                                            <a class="btn btn-primary flex-grow-1" href="{{ route('admin.main') }}">Admin Panel</a>
+                                        </div>
+                                    @else
+                                        <div class="pt-1 d-flex">
+                                            <a href="{{ route('login') }}" class="btn btn-outline-primary flex-grow-1">Login to Access System</a>
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="pt-1 d-flex">
+                                        <a href="{{ route('login') }}" class="btn btn-outline-primary flex-grow-1">Login to Access System</a>
+                                    </div>
+                                @endauth
                             </div>
                         </div>
                     </div>

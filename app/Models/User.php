@@ -23,6 +23,7 @@ class User extends Authenticatable
         'group',
         'email',
         'type',
+        'password'
     ];
 
     public function conferences()

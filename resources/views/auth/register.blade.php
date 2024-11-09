@@ -26,7 +26,11 @@
         <!-- Type -->
         <div class="mt-4">
             <x-input-label for="type" :value="__('Type')" />
-            <x-text-input id="type" class="block w-full mt-1" type="text" name="type" :value="old('type')" required autocomplete="type" />
+            <select id="type" name="type" required autocomplete="type" class="block w-full mt-1">
+                <option value="admin" @selected(old('type') == 'admin')>Admin</option>
+                <option value="employee" @selected(old('type') == 'employee')>Employee</option>
+                <option value="client" @selected(old('type') == 'client')>Client</option>
+            </select>
             <x-input-error :messages="$errors->get('type')" class="mt-2" />
         </div>
 

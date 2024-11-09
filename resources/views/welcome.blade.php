@@ -33,7 +33,7 @@
                     <div class="text-center">
                         <h1 class="mx-auto my-0 text-uppercase">Conference</h1>
                         <h2 class="mx-auto mt-2 mb-5 text-white-50">Management System </h2>
-                        <a class="btn btn-primary" href="{{ route('login') }}">Get Started</a>
+                        <a class="btn btn-primary" href="{{ route('student.profile') }}">Get Started</a>
                     </div>
                 </div>
             </div>

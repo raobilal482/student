@@ -20,6 +20,9 @@
 
         <!-- Create Conference Button -->
         <div class="mb-3 text-end">
+                    <a href="{{ route('admin.user.index') }}" type="button" data-mdb-button-init
+                        data-mdb-ripple-init class="btn btn-primary me-1 flex-grow-1">User Panel</a>
+            
             <a href="{{ route('conference.create') }}" class="btn btn-success">Create Conference</a>
         </div>
 
